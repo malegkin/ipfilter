@@ -17,13 +17,10 @@ configure_file(
 
 
 #set compiler global options
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(COMPILE_OPTIONS -Wpedantic -Wall -Wextra)
-
+set( CMAKE_CXX_STANDARD 14 )
+set( CMAKE_CXX_STANDARD_REQUIRED ON )
 
 include_directories("${CMAKE_SOURCE_DIR}/include")
-#include_directories(${Boost_INCLUDE_DIR})
 
 #init project
 project (${PROJECT_NAME} VERSION ${PROJECT_VERSION}.${PROJECT_BUILD_NUMBER})
@@ -34,6 +31,6 @@ SET(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 add_subdirectory(engine)
 add_subdirectory(test)
 add_subdirectory(main)
-#add_subdirectory(deb)
+add_subdirectory(deb)
 
 
