@@ -13,14 +13,14 @@ matrix:
          - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
 
 before_script:
-  - export _PROJECT_NAME=$(cat .project_name) 
-  - export _PROJECT_VERSION=$(cat .version)
-  - export _PROJECT_DEB_NAME="$_PROJECT_NAME-$_PROJECT_VERSION.$TRAVIS_BUILD_NUMBER-Linux.deb"
-  - sudo apt-get install libboost-test-dev libtclap-dev -y
+    - export _PROJECT_NAME=$(cat .project_name) 
+    - export _PROJECT_VERSION=$(cat .version)
+    - export _PROJECT_DEB_NAME="$_PROJECT_NAME-$_PROJECT_VERSION.$TRAVIS_BUILD_NUMBER-Linux.deb"
+    - sudo apt-get install libboost-test-dev libtclap-dev -y
 
 before_install:
     - eval "${MATRIX_EVAL}"
-
+    - eval "${_PROJECT_DEB_NAME}
 script:
     - cmake .
     - cmake --build .
@@ -31,4 +31,4 @@ deploy:
     provider: script
     skip_cleanup: true
     script:
-        - curl -T $_PROJECT_DEB_NAME -umalegkin:$BINTRAY_API_KEY "https://api.bintray.com/content/otus-malegkin/otus/$PROJECT_NAME/$TRAVIS_BUILD_NUMBER/$_PROJECT_DEB_NAME;deb_distribution=trusty;deb_component=main;deb_architecture=amd64;publish=1"
+        - curl -T $_PROJECT_DEB_NAME -umalegkin:$BINTRAY_API_KEY "https://api.bintray.com/content/otus-malegkin/otus/$_PROJECT_NAME/$TRAVIS_BUILD_NUMBER/$_PROJECT_DEB_NAME;deb_distribution=trusty;deb_component=main;deb_architecture=amd64;publish=1"
