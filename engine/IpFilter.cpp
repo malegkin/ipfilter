@@ -15,7 +15,6 @@ const string Ip::str(){
 }
 
 const string Ip::toString(){
-
     return accumulate( next(begin(octs)), end(octs), to_string(octs[0]),
                         [](auto a, auto b) {
                             return a + "." + to_string(b);
@@ -35,11 +34,26 @@ const octs_t Ip::ip2octs(const string& ip ) {
     }
 
     octs_t out;
-    transform(begin(match), end(match), back_inserter(out), [](auto a) {
-        return stoi( string(a) );
+    transform( next(begin(match)), end(match), back_inserter(out), [](auto a) {
+        return stoi( static_cast<string>(a) );
     });
 
     return out;
 }
 
 
+
+
+//////////////////////////
+const string IpPool::getFirstColumnFromTsvLine(const string& line){
+
+    static const regex  re( "^([0-9\\.]*)\\w" );
+    
+    smatch match;
+    
+    if (!regex_search(line, match, re)){
+        throw std::invalid_argument("The line \""+line+"\" contained a unsupported string!");
+    }
+
+    return static_cast<string>(match[0]);
+}
