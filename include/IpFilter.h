@@ -23,25 +23,24 @@ struct  Ip {
     //return: a ip address as string  CONSTRUCTED of parsed octets
     const string toString();
 
-    uint32_t hashCode() const {
-        return  ( ( static_cast<uint32_t>(octs[0]) << 24)   + 
-                    ( static_cast<uint32_t>(octs[1]) << 16) + 
-                    ( static_cast<uint32_t>(octs[2]) << 8 ) + 
-                    ( static_cast<uint32_t>(octs[3]) )  );
+    uint32_t getHashCode() const {
+        return hashCode;
     }
 
+
     bool operator< (const Ip& right) const {
-        return hashCode() < right.hashCode();
+        return getHashCode() < right.getHashCode();
     }    
 
     bool operator> (const Ip& right) const {
-        return hashCode() > right.hashCode();
+        return getHashCode() > right.getHashCode();
     }    
     
 
 private:
 
     string ip;
+    uint32_t hashCode;
     octs_t octs;
 
     Ip();
@@ -94,6 +93,8 @@ struct IpPool {
         std::transform(getline_iterator(ins), getline_iterator(), inserter(ips, begin(ips)), [](auto line){
             return getFirstColumnFromTsvLine(line);
         } );
+        
+        sort(begin(ips), end(ips));
         copy(begin(ips), end(ips), back_insert_iterator<vector<Ip>>(sorted_ips));
     }
     
@@ -110,10 +111,9 @@ struct IpPool {
 
 private:
 
-//    vector<Ip> ips;
-    set<Ip, std::greater<Ip>> ips;
+    vector<Ip> ips;
+//    set<Ip, std::greater<Ip>> ips;
     vector<Ip> sorted_ips;  
 
-    static const string getFirstColumnFromTsvLine(const string &);
-       
+    static const string getFirstColumnFromTsvLine(const string &);       
 };

@@ -4,7 +4,12 @@
 Ip::Ip(const string& ip_)
         : ip (ip_)
         , octs(ip2octs(ip_))
-{};
+{
+    hashCode = ( ( static_cast<uint32_t>(octs[0]) << 24)   +
+                    ( static_cast<uint32_t>(octs[1]) << 16) +
+                    ( static_cast<uint32_t>(octs[2]) << 8 ) +
+                    ( static_cast<uint32_t>(octs[3]) )  );
+};
 
 uint8_t Ip::operator[](int i){
     return octs[i];

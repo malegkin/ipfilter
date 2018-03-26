@@ -11,27 +11,19 @@ ENDIF()
 file (STRINGS ".version" PROJECT_VERSION)
 file (STRINGS ".project_name" PROJECT_NAME)
 
-configure_file(
-    ${CMAKE_SOURCE_DIR}/include/version.h.in 
-    ${CMAKE_SOURCE_DIR}/include/version.h
-)
-
 #init project
 project (${PROJECT_NAME} VERSION ${PROJECT_VERSION}.${PROJECT_BUILD_NUMBER})
 
-set(ENV{_TEST_RESOURCES_DIR} "${CMAKE_SOURCE_DIR}/test/resources")
+set(ENV{_TEST_RESOURCES_DIR} "${CMAKE_SOURCE_DIR}/resources")
 
 #set compiler global options
 set( CMAKE_CXX_STANDARD 14 )
 set( CMAKE_CXX_STANDARD_REQUIRED ON )
 
-include_directories("${CMAKE_SOURCE_DIR}/include")
-
 #include other cmake modules and configs
-SET(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
-add_subdirectory(engine)
+#SET(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
+
 enable_testing()
-add_subdirectory(test)
-add_subdirectory(main)
+add_subdirectory(src)
 add_subdirectory(deb)
 
