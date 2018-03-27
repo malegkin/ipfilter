@@ -7,6 +7,8 @@
 
 #include "foo.h"
 
+typedef multimap<uint32_t, string> ips_t;
+
 class getline_iterator: public std::iterator<std::input_iterator_tag, std::string>
 {
         std::istream* is;
@@ -43,52 +45,49 @@ class getline_iterator: public std::iterator<std::input_iterator_tag, std::strin
         }
 };
 
-
-void printIps(const vector<uint32_t>& ips, const map<uint32_t, string>& ips_map ){
+void printIps(const ips_t& ips)
+{
     for (auto it = rbegin(ips); it != rend(ips); it++){
-        cout << ips_map.at(*it) << endl;
+        cout << it->second << endl;
     }
 }
 
+
 template< class UnaryPredicate >
-void printFilteredIps(const vector<uint32_t>& ips, const map<uint32_t, string>& ips_map, UnaryPredicate pred ){
-    vector<uint32_t> filteredIps;
+void printFilteredIps(const ips_t& ips, UnaryPredicate pred ){
+    ips_t filteredIps;
+    
+    copy_if(begin(ips), end(ips),  inserter(filteredIps, begin(filteredIps)), pred);
 
-    copy_if(begin(ips), end(ips),  back_insert_iterator<vector<uint32_t>>(filteredIps), pred);
-
-    printIps(filteredIps, ips_map);
+    printIps(filteredIps);
 }
+
 
 int main()
 {
-    vector< uint32_t > ips;
-    map< uint32_t, string > ips_map;
+    ips_t ips;
 
     std::transform( getline_iterator( cin ), getline_iterator(), inserter( ips, begin(ips) ), [&](string line){
             auto t = s2IpHash( line );
             
-            uint32_t iph = get<0>(t);
-            ips_map[ iph ] = get<1>(t); 
-            
-            return iph;
+            return pair<uint32_t, string>(get<0>(t), get<1>(t));
         } );
-
-    sort(begin(ips), end(ips));
    
-    printIps(ips, ips_map);
+    printIps(ips);
  
-    printFilteredIps( ips, ips_map, [](auto iph) { 
-        return (oct(iph, 0) ) == 1 ;
+    printFilteredIps( ips, [](auto ip) { 
+        return (oct(ip.first, 0) ) == 1 ;
     });
 
     //Сразу продолжается список адресов первый байт которых равен 46, а второй 70.    
-    printFilteredIps( ips, ips_map, [](auto iph) {
-        return oct(iph, 0) == 46 && oct(iph, 1) == 70 ; 
+    printFilteredIps( ips, [](auto ip) {
+        return oct(ip.first, 0) == 46 && oct(ip.first, 1) == 70 ; 
     });
 
     //Сразу продолжается список адресов любой байт которых равен 46.
-    printFilteredIps( ips, ips_map, [](auto iph) {
-        return oct(iph, 0) == 46 || oct(iph, 1) == 46 || oct(iph, 2) == 46 || oct(iph, 3) == 46; 
+    printFilteredIps( ips, [](auto ip) {
+        return oct(ip.first, 0) == 46 || oct(ip.first, 1) == 46 || oct(ip.first, 2) == 46 || oct(ip.first, 3) == 46; 
     });
+
     return 0;
 }

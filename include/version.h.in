@@ -1,9 +1,0 @@
-#pragma ones
-
-#include <string>
-
-#cmakedefine PROJECT_VERSION "@PROJECT_VERSION@"
-#cmakedefine PROJECT_BUILD_NUMBER @PROJECT_BUILD_NUMBER@
-
-int         getProjectBuildNumber();
-std::string getProjectVersion();

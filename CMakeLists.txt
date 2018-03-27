@@ -20,9 +20,6 @@ set(ENV{_TEST_RESOURCES_DIR} "${CMAKE_SOURCE_DIR}/resources")
 set( CMAKE_CXX_STANDARD 14 )
 set( CMAKE_CXX_STANDARD_REQUIRED ON )
 
-#include other cmake modules and configs
-#SET(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
-
 enable_testing()
 add_subdirectory(src)
 add_subdirectory(deb)
