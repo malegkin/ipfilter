@@ -116,7 +116,7 @@ BOOST_AUTO_TEST_CASE( test_ip_filter_buffer_overflow )
 
     BOOST_REQUIRE( to_string( ips[0] ) == "1.2.3.4" );
 }
-/*
+
 BOOST_AUTO_TEST_CASE( test_ip_filter_otus )
 {
     boost::filesystem::path test_fn  = get_work_dir()  / "ip_filter.tsv" ;
@@ -124,7 +124,7 @@ BOOST_AUTO_TEST_CASE( test_ip_filter_otus )
     BOOST_REQUIRE( md5(process_file( test_fn.string() )) == "24e7a7b227daee89c64d3ca5fb3da1a");
 
 }
-*/
+
 /*
 BOOST_AUTO_TEST_CASE(testip_filter_1M)
 {
