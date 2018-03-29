@@ -79,7 +79,7 @@ BOOST_AUTO_TEST_CASE(test_ip_parser)
     BOOST_REQUIRE_THROW( s2ip("1.2.3.4.5"), std::invalid_argument );
 
 }
-
+/*
 BOOST_AUTO_TEST_CASE( test_ip_filter )
 {
     boost::filesystem::path in_fn       = get_work_dir()  / "ips.tsv" ;
@@ -94,7 +94,7 @@ BOOST_AUTO_TEST_CASE( test_ip_filter )
                                                                                return to_string(ip) == str;})); 
     ifs.close();
 }
-
+*/
 BOOST_AUTO_TEST_CASE( test_ip_filter_empty )
 {
     stringstream ss;
@@ -116,7 +116,7 @@ BOOST_AUTO_TEST_CASE( test_ip_filter_buffer_overflow )
 
     BOOST_REQUIRE( to_string( ips[0] ) == "1.2.3.4" );
 }
-
+/*
 BOOST_AUTO_TEST_CASE( test_ip_filter_otus )
 {
     boost::filesystem::path test_fn  = get_work_dir()  / "ip_filter.tsv" ;
@@ -124,14 +124,15 @@ BOOST_AUTO_TEST_CASE( test_ip_filter_otus )
     BOOST_REQUIRE( md5(process_file( test_fn.string() )) == "24e7a7b227daee89c64d3ca5fb3da1a");
 
 }
-
+*/
+/*
 BOOST_AUTO_TEST_CASE(testip_filter_1M)
 {
     boost::filesystem::path test_fn  = get_work_dir()  / "1M.tsv" ;
     vector<ip_t> ips = process_file( test_fn.string() );
     BOOST_REQUIRE( ips.size() > 1000*1000 );
 }
-
+*/
 //negative scenarious
 BOOST_AUTO_TEST_CASE( test_ip_filter_ne_big_octet )
 {
