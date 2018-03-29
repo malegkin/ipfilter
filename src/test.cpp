@@ -125,7 +125,7 @@ BOOST_AUTO_TEST_CASE( test_ip_filter_otus )
 
 }
 
-BOOST_AUTO_TEST_CASE(testip_filter_1M, *boost::unit_test::timeout(30))
+BOOST_AUTO_TEST_CASE(testip_filter_1M)
 {
     boost::filesystem::path test_fn  = get_work_dir()  / "1M.tsv" ;
     process_file( test_fn.string() );
