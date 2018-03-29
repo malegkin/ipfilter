@@ -17,9 +17,9 @@
 #Unit tests
     #prepare test vectors;
 
-#    execute_process(COMMAND "${CMAKE_SOURCE_DIR}/src/resources/generate_ips.sh" 1000000 
-#                    OUTPUT_FILE "${CMAKE_SOURCE_DIR}/src/resources/1M.tsv"
- #   )
+   execute_process(COMMAND "${CMAKE_SOURCE_DIR}/src/resources/generate_ips.sh" 1000000 
+                    OUTPUT_FILE "${CMAKE_SOURCE_DIR}/src/resources/1M.tsv"
+    )
 
     execute_process(COMMAND "${CMAKE_SOURCE_DIR}/src/resources/generate_ips.sh" 10000 
                     OUTPUT_FILE "${CMAKE_SOURCE_DIR}/src/resources/ips.tsv"

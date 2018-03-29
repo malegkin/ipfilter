@@ -125,14 +125,14 @@ BOOST_AUTO_TEST_CASE( test_ip_filter_otus )
 
 }
 
-/*
+
 BOOST_AUTO_TEST_CASE(testip_filter_1M)
 {
     boost::filesystem::path test_fn  = get_work_dir()  / "1M.tsv" ;
     vector<ip_t> ips = process_file( test_fn.string() );
     BOOST_REQUIRE( ips.size() > 1000*1000 );
 }
-*/
+
 //negative scenarious
 BOOST_AUTO_TEST_CASE( test_ip_filter_ne_big_octet )
 {
