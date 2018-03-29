@@ -29,12 +29,19 @@ string md5(const vector<ip_t>& ips){
     return md5stream.str();
 } 
 
-vector<ip_t> process_file(string file_name)
+vector<ip_t> process_file(string file_name, uint32_t repeats = 1)
 {
     ifstream ifs ( file_name );
     BOOST_REQUIRE( ifs.is_open() );
 
-    vector<ip_t> ips = process( ifs );
+    std::stringstream buffer;
+
+    for (uint32_t u = 0; u < repeats; u++) {
+        buffer << ifs.rdbuf();
+        ifs.seekg (0, ifs.beg);
+    }
+
+    vector<ip_t> ips = process( buffer );
 
     ifs.close();
     
@@ -106,12 +113,14 @@ BOOST_AUTO_TEST_CASE( test_ip_filter_empty )
 }
 
 BOOST_AUTO_TEST_CASE( test_ip_filter_buffer_overflow )
-{   
+{  
+    uint32_t bs_size = 8*1024*1024;
     stringstream ss;
-    string big_string;
-    big_string.reserve( 1024*1024*1024 );
-    ss << "1.2.3.4\t5\t2" << big_string;
-    
+    unique_ptr<char[]> big_cstring(new char[ bs_size ]);
+    memset(big_cstring.get(), '.', bs_size);
+    big_cstring[ bs_size -1] = '\0'; 
+    ss << "1.2.3.4\t5\t2" << big_cstring.get() << endl;
+ 
     auto ips = process(ss);
 
     BOOST_REQUIRE( to_string( ips[0] ) == "1.2.3.4" );
@@ -128,8 +137,8 @@ BOOST_AUTO_TEST_CASE( test_ip_filter_otus )
 
 BOOST_AUTO_TEST_CASE(testip_filter_1M)
 {
-    boost::filesystem::path test_fn  = get_work_dir()  / "1M.tsv" ;
-    vector<ip_t> ips = process_file( test_fn.string() );
+    boost::filesystem::path test_fn  = get_work_dir()  / "ips.tsv" ;
+    vector<ip_t> ips = process_file( test_fn.string(), 100 );
     BOOST_REQUIRE( ips.size() > 1000*1000 );
 }
 

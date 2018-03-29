@@ -16,7 +16,7 @@ ip_t s2ip(const string& in)
     uint32_t iph     = 0;
     uint8_t  p_count = 0;   
 
-    for(size_t i = 0; i <= in.size();  i++) {    
+    for(size_t i = 0; i <= 16;  i++) {  // max ip lenght == 16   
         switch(in[i]) {
             case '0' ... '9':
                 oct = (oct * 10) + static_cast<uint32_t>(in[i] - '0');
