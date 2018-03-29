@@ -16,7 +16,7 @@ before_script:
     - export _PROJECT_NAME=$(cat .project_name) 
     - export _PROJECT_VERSION=$(cat .version)
     - export _PROJECT_DEB_NAME="$_PROJECT_NAME-$_PROJECT_VERSION.$TRAVIS_BUILD_NUMBER-Linux.deb"
-    - sudo apt-get install libboost-test-dev libtclap-dev -y
+    - sudo apt-get install libboost-test-dev libtclap-dev libssl-dev -y
 
 before_install:
     - eval "${MATRIX_EVAL}"
