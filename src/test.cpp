@@ -79,7 +79,7 @@ BOOST_AUTO_TEST_CASE(test_ip_parser)
     BOOST_REQUIRE_THROW( s2ip("1.2.3.4.5"), std::invalid_argument );
 
 }
-/*
+
 BOOST_AUTO_TEST_CASE( test_ip_filter )
 {
     boost::filesystem::path in_fn       = get_work_dir()  / "ips.tsv" ;
@@ -94,7 +94,7 @@ BOOST_AUTO_TEST_CASE( test_ip_filter )
                                                                                return to_string(ip) == str;})); 
     ifs.close();
 }
-*/
+
 BOOST_AUTO_TEST_CASE( test_ip_filter_empty )
 {
     stringstream ss;

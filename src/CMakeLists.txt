@@ -21,13 +21,13 @@
 #                    OUTPUT_FILE "${CMAKE_SOURCE_DIR}/src/resources/1M.tsv"
  #   )
 
-#    execute_process(COMMAND "${CMAKE_SOURCE_DIR}/src/resources/generate_ips.sh" 10000 
-#                    OUTPUT_FILE "${CMAKE_SOURCE_DIR}/src/resources/ips.tsv"
-#    )
-#    execute_process(COMMAND "${CMAKE_SOURCE_DIR}/src/resources/sort_ips.sh"  
-#                    "${CMAKE_SOURCE_DIR}/src/resources/ips.tsv" 
-#                    OUTPUT_FILE "${CMAKE_SOURCE_DIR}/src/resources/sorted_ips.tsv"
-#    )     
+    execute_process(COMMAND "${CMAKE_SOURCE_DIR}/src/resources/generate_ips.sh" 10000 
+                    OUTPUT_FILE "${CMAKE_SOURCE_DIR}/src/resources/ips.tsv"
+    )
+    execute_process(COMMAND "${CMAKE_SOURCE_DIR}/src/resources/sort_ips.sh"  
+                    "${CMAKE_SOURCE_DIR}/src/resources/ips.tsv" 
+                    OUTPUT_FILE "${CMAKE_SOURCE_DIR}/src/resources/sorted_ips.tsv"
+    )     
 
     add_executable(test_foo test.cpp)
     add_test(test_foo test_foo "${CMAKE_SOURCE_DIR}/src/resources")
