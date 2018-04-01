@@ -40,6 +40,7 @@ vector< ip_t > process_file(string file_name, uint32_t repeats = 1 )
     std::stringstream buffer;
 
     for (uint32_t u = 0; u < repeats; u++) {
+        cout << u << endl;
         buffer << ifs.rdbuf();
         ifs.seekg (0, ifs.beg);
     }
