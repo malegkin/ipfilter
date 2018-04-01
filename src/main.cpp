@@ -7,7 +7,7 @@
 
 int main()
 {
-    for (auto ip: process(cin)){
+    for (auto ip: process( cin )){
         cout << to_string(ip) << endl;       
     }
 

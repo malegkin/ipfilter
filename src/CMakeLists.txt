@@ -27,8 +27,7 @@
 
     add_executable(test_foo test.cpp)
     add_test(test_foo test_foo "${CMAKE_SOURCE_DIR}/src/resources")
-    set_tests_properties(test_foo PROPERTIES TIMEOUT 30)
-    
+    set_tests_properties(test_foo PROPERTIES TIMEOUT 30 )
 
         target_link_libraries(  test_foo
                             ${Boost_LIBRARIES}

@@ -8,6 +8,8 @@
 #include <fstream>
 #include "openssl/md5.h"
 
+#define LOG_LEVEL all
+
 BOOST_AUTO_TEST_SUITE(test_suite_main)
 
 string md5(const vector<ip_t>& ips){
@@ -29,7 +31,8 @@ string md5(const vector<ip_t>& ips){
     return md5stream.str();
 } 
 
-vector<ip_t> process_file(string file_name, uint32_t repeats = 1)
+
+vector< ip_t > process_file(string file_name, uint32_t repeats = 1 )
 {
     ifstream ifs ( file_name );
     BOOST_REQUIRE( ifs.is_open() );
@@ -41,11 +44,9 @@ vector<ip_t> process_file(string file_name, uint32_t repeats = 1)
         ifs.seekg (0, ifs.beg);
     }
 
-    vector<ip_t> ips = process( buffer );
+    ifs.close();    
 
-    ifs.close();
-    
-    return ips;
+    return process( buffer );
 }
 
 boost::filesystem::path get_work_dir()
@@ -53,7 +54,6 @@ boost::filesystem::path get_work_dir()
     int argc        = boost::unit_test::framework::master_test_suite().argc;
     char** argv     = boost::unit_test::framework::master_test_suite().argv;
 
-    cout << argc << endl;
     BOOST_REQUIRE( argc == 2);
 
     return boost::filesystem::path( argv[1] );
@@ -138,8 +138,8 @@ BOOST_AUTO_TEST_CASE( test_ip_filter_otus )
 BOOST_AUTO_TEST_CASE(testip_filter_1M)
 {
     boost::filesystem::path test_fn  = get_work_dir()  / "ips.tsv" ;
-    vector<ip_t> ips = process_file( test_fn.string(), 100 );
-    BOOST_REQUIRE( ips.size() > 1000*1000 );
+    
+    BOOST_REQUIRE ( process_file( test_fn.string(), 100).size() > 1000 * 1000 );
 }
 
 //negative scenarious

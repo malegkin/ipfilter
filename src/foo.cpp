@@ -52,7 +52,7 @@ ip_t s2ip(const string& in)
 
 uint8_t ip2oct(const ip_t& ip, const uint8_t i )
 {
-    if( i > 3 )
+    if ( i > 3 )
         throw std::out_of_range("'i' must be a number between 0 and 3");
 
     return static_cast<uint8_t>( ( get<uint32_t>(ip) << (8 * i)) >> 24 );
@@ -90,7 +90,7 @@ vector< ip_t > process( istream& in )
     for(auto filter: filters){
         copy_if( begin(ips), end(ips), inserter(out, end(out)), filter);
     }
-
+ 
     return out;
 }
 
