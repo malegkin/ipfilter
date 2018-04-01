@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 cat "$1" | cut -f1 | sort -n -r -t . -k 1,1 -k 2,2 -k 3,3 -k 4,4 
 

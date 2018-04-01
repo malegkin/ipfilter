@@ -1,4 +1,4 @@
-#!/usr/bin/env bash -eu
+#!/bin/bash
 
 for i in $(eval echo {0..$1}); 
 do
