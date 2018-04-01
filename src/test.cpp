@@ -94,6 +94,8 @@ BOOST_AUTO_TEST_CASE( test_ip_filter )
     boost::filesystem::path sorted_fn   = get_work_dir()  / "sorted_ips.tsv" ;
 
     auto ips = process_file( in_fn.string() );
+
+    BOOST_REQUIRE ( ips.size() > 0 );
     
     ifstream ifs( sorted_fn.string() );
     BOOST_REQUIRE( ifs.is_open() );
