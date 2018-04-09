@@ -17,11 +17,21 @@
 #Unit tests
     #prepare test vectors;
 
-    execute_process(COMMAND "${CMAKE_SOURCE_DIR}/src/resources/generate_ips.sh" 10000 
-                    OUTPUT_FILE "${CMAKE_SOURCE_DIR}/src/resources/ips.tsv"
-    )
     execute_process(COMMAND "${CMAKE_SOURCE_DIR}/src/resources/sort_ips.sh"  
-                    "${CMAKE_SOURCE_DIR}/src/resources/ips.tsv" 
+                    "${CMAKE_SOURCE_DIR}/src/resources/ips.tsv" 0
+                    OUTPUT_FILE "${CMAKE_SOURCE_DIR}/src/resources/sorted_ips_0.tsv"
+    )    
+     
+    execute_process(COMMAND "${CMAKE_SOURCE_DIR}/src/resources/sort_ips.sh"  
+                    "${CMAKE_SOURCE_DIR}/src/resources/ips.tsv" 1
+                    OUTPUT_FILE "${CMAKE_SOURCE_DIR}/src/resources/sorted_ips_1.tsv"
+    )     
+    execute_process(COMMAND "${CMAKE_SOURCE_DIR}/src/resources/sort_ips.sh"  
+                    "${CMAKE_SOURCE_DIR}/src/resources/ips.tsv" 2
+                    OUTPUT_FILE "${CMAKE_SOURCE_DIR}/src/resources/sorted_ips_2.tsv"
+    )     
+    execute_process(COMMAND "${CMAKE_SOURCE_DIR}/src/resources/sort_ips.sh"  
+                    "${CMAKE_SOURCE_DIR}/src/resources/ips.tsv" 0 1 2 3
                     OUTPUT_FILE "${CMAKE_SOURCE_DIR}/src/resources/sorted_ips.tsv"
     )     
 

@@ -59,34 +59,27 @@ uint8_t ip2oct(const ip_t& ip, const uint8_t i )
 }
 
 
-
-vector< ip_t > process( istream& in )
+vector< ip_t > process( istream in) 
 {
-    multimap<uint32_t, string, greater<uint32_t> > ips;
+    vector< filter_predicat_t > filters;
+        filters.push_back( FILTER_PREDICAT_0 );
+        filters.push_back( FILTER_PREDICAT_1 );
+        filters.push_back( FILTER_PREDICAT_2 );
+        filters.push_back( FILTER_PREDICAT_3 );
+
+    return process( in, filters);
+} 
+
+
+vector< ip_t > process( istream& in , const vector< filter_predicat_t >& filters )
+{
+    multimap< uint32_t, string, greater<uint32_t> > ips;
     vector< ip_t > out;
 
     transform( getline_iterator( in ), getline_iterator(), inserter( ips, begin(ips) ), [&](string line){
             return s2ip( line );
     } );
 
-    vector< function< bool( const ip_t& ) >> filters;
-        //Вывод всех ip
-        filters.push_back( []( const ip_t& ) {
-            return true;
-        });
-        //Сразу продолжается список адресов первый байт которых равен 1. 
-        filters.push_back( [](const ip_t& ip) {
-            return ip2oct(ip, 0) == 1 ;
-        });
-        //Сразу продолжается список адресов первый байт которых равен 46, а второй 70.    
-        filters.push_back( [](const ip_t& ip) {
-            return ip2oct(ip, 0) == 46 && ip2oct(ip, 1) == 70 ;
-        });
-        //Сразу продолжается список адресов любой байт которых равен 46.
-        filters.push_back( [](const ip_t& ip) {
-            return ip2oct(ip, 0) == 46 || ip2oct(ip, 1) == 46 || ip2oct(ip, 2) == 46 || ip2oct(ip, 3) == 46;
-        });
-    
     for(auto filter: filters){
         copy_if( begin(ips), end(ips), inserter(out, end(out)), filter);
     }

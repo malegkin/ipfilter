@@ -40,7 +40,6 @@ vector< ip_t > process_file(string file_name, uint32_t repeats = 1 )
     std::stringstream buffer;
 
     for (uint32_t u = 0; u < repeats; u++) {
-        cout << u << endl;
         buffer << ifs.rdbuf();
         ifs.seekg (0, ifs.beg);
     }
@@ -48,6 +47,23 @@ vector< ip_t > process_file(string file_name, uint32_t repeats = 1 )
     ifs.close();    
 
     return process( buffer );
+}
+
+bool test_filter( string ips_fn, string sorted_ips_fn, filter_predicat_t filter )
+{
+    boost::filesystem::path in_fn       = get_work_dir()  / ips_fn ;
+    boost::filesystem::path sorted_fn   = get_work_dir()  / sorted_ips_fn ;
+
+    auto ips = process_file( in_fn.string() );
+
+    BOOST_REQUIRE ( ips.size() > 1000 );
+   
+    ifstream ifs( sorted_fn.string() );
+    BOOST_REQUIRE( ifs.is_open() );
+
+    BOOST_REQUIRE( equal( begin(ips), end(ips), getline_iterator( ifs ), [](const auto& ip, const string& str) {
+                                                                               return to_string(ip) == str;}));
+    ifs.close();
 }
 
 boost::filesystem::path get_work_dir()
@@ -95,7 +111,7 @@ BOOST_AUTO_TEST_CASE( test_ip_filter )
 
     auto ips = process_file( in_fn.string() );
 
-    BOOST_REQUIRE ( ips.size() > 0 );
+    BOOST_REQUIRE ( ips.size() > 1000 );
     
     ifstream ifs( sorted_fn.string() );
     BOOST_REQUIRE( ifs.is_open() );
