@@ -31,4 +31,4 @@ deploy:
     provider: script
     skip_cleanup: true
     script:
-        - curl -T $_PROJECT_DEB_NAME -umalegkin:$BINTRAY_API_KEY "https://api.bintray.com/content/otus-malegkin/otus/$_PROJECT_NAME/$TRAVIS_BUILD_NUMBER/$_PROJECT_DEB_NAME;deb_distribution=trusty;deb_component=main;deb_architecture=amd64;publish=1"
+        - curl -T $_PROJECT_DEB_NAME -umalegkin:$BINTRAY_API_KEY "https://api.bintray.com/content/om2/otus/$_PROJECT_NAME/$TRAVIS_BUILD_NUMBER/$_PROJECT_DEB_NAME;deb_distribution=trusty;deb_component=main;deb_architecture=amd64;publish=1"
