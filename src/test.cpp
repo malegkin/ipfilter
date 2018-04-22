@@ -12,8 +12,18 @@
 
 BOOST_AUTO_TEST_SUITE(test_suite_main)
 
-string md5(const vector<ip_t>& ips){
-    uint8_t digest[16];
+    boost::filesystem::path get_work_dir()
+    {
+        int argc        = boost::unit_test::framework::master_test_suite().argc;
+        char** argv     = boost::unit_test::framework::master_test_suite().argv;
+
+        BOOST_REQUIRE( argc == 2);
+
+        return boost::filesystem::path( argv[1] );
+    }
+
+    string md5(const vector<ip_t>& ips){
+        uint8_t digest[16];
 
     MD5_CTX ctx;
     MD5_Init(&ctx);
@@ -66,15 +76,6 @@ bool test_filter( string ips_fn, string sorted_ips_fn, filter_predicat_t filter 
     ifs.close();
 }
 
-boost::filesystem::path get_work_dir()
-{
-    int argc        = boost::unit_test::framework::master_test_suite().argc;
-    char** argv     = boost::unit_test::framework::master_test_suite().argv;
-
-    BOOST_REQUIRE( argc == 2);
-
-    return boost::filesystem::path( argv[1] );
-}
 
 BOOST_AUTO_TEST_CASE(test_ip_parser)
 {
@@ -101,6 +102,7 @@ BOOST_AUTO_TEST_CASE(test_ip_parser)
     BOOST_REQUIRE_THROW( s2ip("1.2.3.256"), std::invalid_argument );
     BOOST_REQUIRE_THROW( s2ip("-1.2.3.4"),  std::invalid_argument );
     BOOST_REQUIRE_THROW( s2ip("1.2.3.4.5"), std::invalid_argument );
+    BOOST_REQUIRE_THROW( s2ip("abrakadabra"), std::invalid_argument );
 
 }
 

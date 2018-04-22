@@ -1,10 +1,6 @@
 #include "stdafx.h"
 #include "foo.h"
 
-
-#include <openssl/md5.h>
-
-
 int main()
 {
     for (auto ip: process( cin )){

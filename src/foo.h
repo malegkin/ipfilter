@@ -8,12 +8,11 @@ uint8_t         ip2oct( const ip_t&   ip,   uint8_t index );
 ip_t            s2ip(   const string& in );
 
 
-vector< ip_t >  process( istream& stream );
 
 string to_string( const ip_t& ip );
 
 
-typedef filter_predicat_t = function< bool( const ip_t& ) >;
+using filter_predicat_t = function< bool( const ip_t& ) >;
 
 //все один к одному
 auto FILTER_PREDICAT_0 = []( const ip_t& ) { return true; };
@@ -26,6 +25,10 @@ auto FILTER_PREDICAT_2 = [](const ip_t& ip) { return ip2oct(ip, 0) == 46 && ip2o
 
 //Сразу продолжается список адресов любой байт которых равен 46.
 auto FILTER_PREDICAT_3 = [](const ip_t& ip) { return ip2oct(ip, 0) == 46 || ip2oct(ip, 1) == 46 || ip2oct(ip, 2) == 46 || ip2oct(ip, 3) == 46; };
+
+
+vector< ip_t >  process( istream& stream );
+vector< ip_t >  process( istream& in , const vector< filter_predicat_t >& filters );
 
 
 class getline_iterator: public std::iterator<std::input_iterator_tag, std::string>

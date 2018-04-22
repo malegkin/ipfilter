@@ -59,7 +59,23 @@ uint8_t ip2oct(const ip_t& ip, const uint8_t i )
 }
 
 
-vector< ip_t > process( istream in) 
+vector< ip_t > process( istream& in , const vector< filter_predicat_t >& filters )
+{
+    multimap< uint32_t, string, greater<uint32_t> > ips;
+    vector< ip_t > out;
+
+    for (string line; getline(in, line);){
+        ips.insert(s2ip(line));
+    }
+
+    for(auto filter: filters){
+        copy_if( begin(ips), end(ips), inserter(out, end(out)), filter);
+    }
+
+    return out;
+}
+
+vector< ip_t > process( istream& in)
 {
     vector< filter_predicat_t > filters;
         filters.push_back( FILTER_PREDICAT_0 );
@@ -71,21 +87,6 @@ vector< ip_t > process( istream in)
 } 
 
 
-vector< ip_t > process( istream& in , const vector< filter_predicat_t >& filters )
-{
-    multimap< uint32_t, string, greater<uint32_t> > ips;
-    vector< ip_t > out;
-
-    transform( getline_iterator( in ), getline_iterator(), inserter( ips, begin(ips) ), [&](string line){
-            return s2ip( line );
-    } );
-
-    for(auto filter: filters){
-        copy_if( begin(ips), end(ips), inserter(out, end(out)), filter);
-    }
- 
-    return out;
-}
 
 string to_string(const ip_t& ip){
     return ip.second;
