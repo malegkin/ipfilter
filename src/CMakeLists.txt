@@ -30,7 +30,14 @@
                     "${CMAKE_SOURCE_DIR}/src/resources/ips.tsv" 2
                     OUTPUT_FILE "${CMAKE_SOURCE_DIR}/src/resources/sorted_ips_2.tsv"
     )     
-    execute_process(COMMAND "${CMAKE_SOURCE_DIR}/src/resources/sort_ips.sh"  
+
+    execute_process(COMMAND "${CMAKE_SOURCE_DIR}/src/resources/sort_ips.sh"
+                    "${CMAKE_SOURCE_DIR}/src/resources/ips.tsv" 3
+                    OUTPUT_FILE "${CMAKE_SOURCE_DIR}/src/resources/sorted_ips_3.tsv"
+            )
+
+
+    execute_process(COMMAND "${CMAKE_SOURCE_DIR}/src/resources/sort_ips.sh"
                     "${CMAKE_SOURCE_DIR}/src/resources/ips.tsv" 0 1 2 3
                     OUTPUT_FILE "${CMAKE_SOURCE_DIR}/src/resources/sorted_ips.tsv"
     )     

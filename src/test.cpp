@@ -39,7 +39,7 @@ BOOST_AUTO_TEST_SUITE(test_suite_main)
     }
     
     return md5stream.str();
-} 
+}
 
 
 vector< ip_t > process_file(string file_name, uint32_t repeats = 1 )
@@ -47,32 +47,49 @@ vector< ip_t > process_file(string file_name, uint32_t repeats = 1 )
     ifstream ifs ( file_name );
     BOOST_REQUIRE( ifs.is_open() );
 
-    std::stringstream buffer;
+    stringstream buffer;
 
     for (uint32_t u = 0; u < repeats; u++) {
         buffer << ifs.rdbuf();
         ifs.seekg (0, ifs.beg);
     }
 
-    ifs.close();    
+    ifs.close();
 
-    return process( buffer );
+    return process(buffer);
 }
 
-bool test_filter( string ips_fn, string sorted_ips_fn, filter_predicat_t filter )
+    vector< ip_t > process_file(string file_name, filter_predicat_t filter, uint32_t repeats = 1 )
+    {
+        ifstream ifs ( file_name );
+        BOOST_REQUIRE( ifs.is_open() );
+
+        stringstream buffer;
+
+        for (uint32_t u = 0; u < repeats; u++) {
+            buffer << ifs.rdbuf();
+            ifs.seekg (0, ifs.beg);
+        }
+
+        ifs.close();
+
+        return process(buffer, vector<filter_predicat_t>({filter}));
+    }
+
+
+
+void test_filter( string ips_fn, string sorted_ips_fn, filter_predicat_t filter )
 {
-    boost::filesystem::path in_fn       = get_work_dir()  / ips_fn ;
-    boost::filesystem::path sorted_fn   = get_work_dir()  / sorted_ips_fn ;
-
-    auto ips = process_file( in_fn.string() );
-
-    BOOST_REQUIRE ( ips.size() > 1000 );
+    auto ips = process_file( ips_fn, filter );
    
-    ifstream ifs( sorted_fn.string() );
+    ifstream ifs( sorted_ips_fn );
     BOOST_REQUIRE( ifs.is_open() );
 
-    BOOST_REQUIRE( equal( begin(ips), end(ips), getline_iterator( ifs ), [](const auto& ip, const string& str) {
-                                                                               return to_string(ip) == str;}));
+    auto ips_it = begin(ips);
+    for (string line; getline(ifs, line); ips_it++){
+        BOOST_REQUIRE( line == to_string(*ips_it));
+    }
+
     ifs.close();
 }
 
@@ -106,7 +123,41 @@ BOOST_AUTO_TEST_CASE(test_ip_parser)
 
 }
 
-BOOST_AUTO_TEST_CASE( test_ip_filter )
+
+    BOOST_AUTO_TEST_CASE( test_filter_0 )
+    {
+        boost::filesystem::path in_fn       = get_work_dir()  / "ips.tsv" ;
+        boost::filesystem::path sorted_fn   = get_work_dir()  / "sorted_ips_0.tsv" ;
+
+        test_filter(in_fn.string(), sorted_fn.string(), FILTER_PREDICAT_0);
+    }
+
+    BOOST_AUTO_TEST_CASE( test_filter_1 )
+    {
+        boost::filesystem::path in_fn       = get_work_dir()  / "ips.tsv" ;
+        boost::filesystem::path sorted_fn   = get_work_dir()  / "sorted_ips_1.tsv" ;
+
+        test_filter(in_fn.string(), sorted_fn.string(), FILTER_PREDICAT_1);
+    }
+
+    BOOST_AUTO_TEST_CASE( test_filter_2 )
+    {
+        boost::filesystem::path in_fn       = get_work_dir()  / "ips.tsv" ;
+        boost::filesystem::path sorted_fn   = get_work_dir()  / "sorted_ips_2.tsv" ;
+
+        test_filter(in_fn.string(), sorted_fn.string(), FILTER_PREDICAT_2);
+    }
+
+    BOOST_AUTO_TEST_CASE( test_filter_3 )
+    {
+        boost::filesystem::path in_fn       = get_work_dir()  / "ips.tsv" ;
+        boost::filesystem::path sorted_fn   = get_work_dir()  / "sorted_ips_3.tsv" ;
+
+        test_filter(in_fn.string(), sorted_fn.string(), FILTER_PREDICAT_3);
+    }
+
+
+    BOOST_AUTO_TEST_CASE( test_process )
 {
     boost::filesystem::path in_fn       = get_work_dir()  / "ips.tsv" ;
     boost::filesystem::path sorted_fn   = get_work_dir()  / "sorted_ips.tsv" ;
@@ -118,12 +169,15 @@ BOOST_AUTO_TEST_CASE( test_ip_filter )
     ifstream ifs( sorted_fn.string() );
     BOOST_REQUIRE( ifs.is_open() );
 
-    BOOST_REQUIRE( equal( begin(ips), end(ips), getline_iterator( ifs ), [](const auto& ip, const string& str) {
-                                                                               return to_string(ip) == str;})); 
+    auto ips_it = begin(ips);
+    for (string line; getline(ifs, line); ips_it++){
+        BOOST_REQUIRE( line == to_string(*ips_it));
+    }
+
     ifs.close();
 }
 
-BOOST_AUTO_TEST_CASE( test_ip_filter_empty )
+BOOST_AUTO_TEST_CASE( test_process_on_empty_in )
 {
     stringstream ss;
         
@@ -133,7 +187,7 @@ BOOST_AUTO_TEST_CASE( test_ip_filter_empty )
 
 }
 
-BOOST_AUTO_TEST_CASE( test_ip_filter_buffer_overflow )
+BOOST_AUTO_TEST_CASE( test_ip_parser_big_line )
 {  
     uint32_t bs_size = 8*1024*1024;
     stringstream ss;
@@ -142,9 +196,9 @@ BOOST_AUTO_TEST_CASE( test_ip_filter_buffer_overflow )
     big_cstring[ bs_size -1] = '\0'; 
     ss << "1.2.3.4\t5\t2" << big_cstring.get() << endl;
  
-    auto ips = process(ss);
+    ip_t ip = s2ip( ss.str() );
 
-    BOOST_REQUIRE( to_string( ips[0] ) == "1.2.3.4" );
+    BOOST_REQUIRE( to_string( ip ) == "1.2.3.4" );
 }
 
 BOOST_AUTO_TEST_CASE( test_ip_filter_otus )
